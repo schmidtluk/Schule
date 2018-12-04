@@ -1,0 +1,15 @@
+Struktur:
+
+	Adapter
+	Bridge
+	Proxy
+	Fassade
+	Composite
+	Decorator
+
+Verhalten:
+	
+	Chain of Responsibility
+	Observer
+	Strategy
+	State

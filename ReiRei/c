@@ -1,0 +1,46 @@
+#include <pthread.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+#include <string.h>
+#include <errno.h>
+#include <time.h>
+#include <unistd.h>
+
+#define SLEEP_MAX_SECONDS  7
+
+void *printHello(void *threadid)
+{
+   long tid;
+   tid = (long)threadid;
+   int waitInSecs  = (rand()%6)+1; 
+   printf("\nHello World! It's me, thread #<%ld>, change to sleep mode for <%d> seconds!\n", tid, waitInSecs);
+   sleep(waitInSecs); 
+   printf("\nThread #<%ld> stops working ...\n",tid);  
+   pthread_exit(NULL);
+}
+
+int main(int argc, char *argv[])
+{
+   srand((unsigned)time(0)); 
+   
+   pthread_t thread1, thread2;
+   int rc;
+   long t;
+   printf("In main: creating thread %ld\n", t);
+   rc = pthread_create(&thread1, NULL, printHello, (void *)t);
+   if (rc){
+      printf("ERROR; return code from pthread_create() is <%d>, Error from system is <%s>.\n", rc,strerror(errno));
+      exit(-1);
+    }
+   rc = pthread_create(&thread2, NULL, printHello, (void *)t);
+   if (rc){
+      printf("ERROR; return code from pthread_create() is <%d>, Error from system is <%s>.\n", rc,strerror(errno));
+      exit(-1);
+    }
+   pthread_join(thread1,NULL);
+   pthread_join(thread2,NULL);
+   /* Last thing that main() should do */
+   pthread_exit(NULL);
+}
+
